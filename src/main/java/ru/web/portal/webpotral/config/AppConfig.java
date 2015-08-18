@@ -6,10 +6,18 @@
 
 package ru.web.portal.webpotral.config;
 
+import org.springframework.context.annotation.Configuration;
+import org.springframework.scheduling.annotation.EnableAsync;
+import org.springframework.scheduling.annotation.EnableScheduling;
+
 /**
  *
  * @author Igor Salnikov <igor.salnikov@stoloto.ru>
  */
+
+@Configuration
+@EnableAsync
+@EnableScheduling
 public class AppConfig {
     
 }
