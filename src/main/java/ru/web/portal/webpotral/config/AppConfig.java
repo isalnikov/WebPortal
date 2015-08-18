@@ -11,7 +11,8 @@ import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 /**
- *
+ * Настройка поддержки асинхронности 
+ * Выполнение заданий по расписанию 
  * @author Igor Salnikov <igor.salnikov@stoloto.ru>
  */
 
