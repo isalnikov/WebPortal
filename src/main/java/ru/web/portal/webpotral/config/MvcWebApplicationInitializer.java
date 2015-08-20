@@ -6,13 +6,6 @@
 
 package ru.web.portal.webpotral.config;
 
-import javax.servlet.Filter;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRegistration;
-import org.springframework.util.ObjectUtils;
-import org.springframework.web.context.WebApplicationContext;
-import org.springframework.web.servlet.DispatcherServlet;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
 /**
@@ -26,12 +19,12 @@ public class MvcWebApplicationInitializer extends AbstractAnnotationConfigDispat
     
     @Override
     protected Class<?>[] getRootConfigClasses() {
-         return new Class[] {WebConfig.class};
+         return new Class[] {SecurityConfig.class};
     }
 
     @Override
     protected Class<?>[] getServletConfigClasses() {
-        return new Class[] {WebConfig.class};
+        return new Class[] {SecurityConfig.class};
     }
 
     @Override
