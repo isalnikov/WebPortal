@@ -45,5 +45,26 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         resolver.setViewClass(JstlView.class);
         return resolver;
     }
+    
+//    @Bean(name = "velocityViewResolver")
+//    public VelocityViewResolver velocityViewResolver() {
+//        VelocityViewResolver resolver = new VelocityViewResolver();
+//        resolver.setViewClass(VelocityToolboxView.class);
+//        resolver.setPrefix("/WEB-INF/velocity/");
+//        resolver.setSuffix(".vm");
+//        resolver.setCache(true);
+//        resolver.setOrder(1);
+//        return resolver;
+//    }
+//    
+//    @Bean(name = "velocityConfig")
+//    public VelocityConfig velocityConfig(){
+//        VelocityConfigurer configurer = new VelocityConfigurer();
+//        
+//        configurer.setConfigLocation("velocity.properties");
+//        configurer.setResourceLoaderPath("/WEB-INF/velocity/");
+//        return (VelocityConfig) configurer;
+//                
+//    }
 
 }
