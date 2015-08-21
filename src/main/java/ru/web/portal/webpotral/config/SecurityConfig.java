@@ -14,6 +14,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
@@ -27,9 +28,11 @@ import org.springframework.web.servlet.view.JstlView;
  */
 @Configuration
 @EnableWebMvc
-@ComponentScan({"ru.web.portal.webpotral.config",
+@ComponentScan({
+    "ru.web.portal.webpotral.config",
     "ru.web.portal.webpotral.services",
-    "ru.web.portal.webpotral.controllers"})
+    "ru.web.portal.webpotral.controllers"
+})
 
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(jsr250Enabled = true, prePostEnabled = true)
@@ -38,13 +41,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
 
-//        BCryptPasswordEncoder encoder = passwordEncoder();
-//       auth.inMemoryAuthentication().passwordEncoder(encoder);
+        BCryptPasswordEncoder encoder = passwordEncoder();
+        auth.inMemoryAuthentication().passwordEncoder(encoder);
         auth.inMemoryAuthentication().withUser("user").password("user").roles("USER");
         auth.inMemoryAuthentication().withUser("admin").password("admin").roles("ADMIN");
         auth.inMemoryAuthentication().withUser("support").password("support").roles("SUPPORT");
-        
-
     }
 
     @Override
@@ -63,6 +64,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .logout().deleteCookies("JSESSIONID").permitAll();
 
+    }
+    
+    
+    @Bean
+    public BCryptPasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 
     @Configuration
