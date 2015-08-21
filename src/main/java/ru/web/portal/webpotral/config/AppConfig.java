@@ -5,6 +5,7 @@
  */
 package ru.web.portal.webpotral.config;
 
+import java.time.LocalTime;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
@@ -12,14 +13,20 @@ import org.springframework.context.annotation.PropertySources;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
 
 /**
  * Настройка поддержки асинхронности Выполнение заданий по расписанию
  *
- * @author Igor Salnikov <igor.salnikov@stoloto.ru>
+ * @author Igor Salnikov <isalnikov1@gmail.com>
  */
 @Configuration
 @EnableAsync
+@EnableScheduling
+    @PropertySources({
+        @PropertySource(value = "classpath:application.properties", ignoreResourceNotFound = true),
+        @PropertySource(value = "classpath:messages.properties", ignoreResourceNotFound = true),
+    })
 public class AppConfig {
 
     @Bean
@@ -29,10 +36,6 @@ public class AppConfig {
     }
 
     @Configuration
-    @PropertySources({
-        @PropertySource(value = "classpath:application.properties", ignoreResourceNotFound = true),
-        @PropertySource(value = "classpath:messages.properties", ignoreResourceNotFound = true),
-    })
     public static class JpaAppConfig {
         
     }

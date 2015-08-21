@@ -11,7 +11,14 @@
 
     <developers>
         <developer>
-            <id>igor.salnikov</id>
+            <id>isalnikov</id>
+            <name>Igor Salnikov</name>
+            <email>isalnikov1@gmail.com</email>
+            <url>http://isalnikov.com</url>
+            <timezone>+3</timezone>
+            <roles>
+                <role>Java Developer</role>
+            </roles>
         </developer>
     </developers>
 
@@ -65,8 +72,8 @@
             <artifactId>spring-security-config</artifactId>
             <version>${spring.security}</version>
         </dependency>
-        
-        
+
+        <!-- Servlet API, JSTL -->  
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
@@ -105,6 +112,13 @@
     </dependencies>
 
     <build>
+       <finalName>WebPortal</finalName>
+       <resources>
+           <resource>
+               <directory>src/main/resources</directory>
+               <filtering>true</filtering>
+           </resource>  
+       </resources>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

@@ -1,7 +1,7 @@
 <%-- 
     Document   : error
     Created on : Aug 20, 2015, 4:46:11 PM
-    Author     : Igor Salnikov  <igor.salnikov@stoloto.ru>
+    Author     : Igor Salnikov  <isalnikov1@gmail.com>
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>

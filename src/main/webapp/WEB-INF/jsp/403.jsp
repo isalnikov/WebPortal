@@ -1,7 +1,7 @@
 <%-- 
     Document   : 404
     Created on : Aug 18, 2015, 6:00:52 PM
-    Author     : Igor Salnikov  <igor.salnikov@stoloto.ru>
+    Author     : Igor Salnikov  <isalnikov1@gmail.com>
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>

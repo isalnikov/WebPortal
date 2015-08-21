@@ -6,9 +6,11 @@
 package ru.web.portal.webpotral.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -16,29 +18,33 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.context.AbstractSecurityWebApplicationInitializer;
+import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
 
 /**
  *
- * @author Igor Salnikov <igor.salnikov@stoloto.ru>
+ * @author Igor Salnikov <isalnikov1@gmail.com>
  */
 @Configuration
 @EnableWebMvc
 @ComponentScan({
     "ru.web.portal.webpotral.config",
-    "ru.web.portal.webpotral.services",
-    "ru.web.portal.webpotral.controllers",
-    "ru.web.portal.webpotral.schedulers"
+    "ru.web.portal.webpotral.service",
+    "ru.web.portal.webpotral.controller",
+    "ru.web.portal.webpotral.scheduler"
 })
-
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(jsr250Enabled = true, prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+    private static final int CACHE_PERIOD = 31556926;// one year
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
@@ -81,13 +87,48 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 
+    /**
+     * Настройки Безопасности (Spring Security — SecurityConfig.java,
+     * SecurityWebApplicationInitializer.java) Нужно настроить все так чтобы
+     * определенный URL паттерн (путь к определенному ресурсу) проходил через
+     * уровень безопасности (проходил бы проверку фильтрами Spring Security)
+     * AbstractAnnotationConfigDispatcherServletInitializer
+     *
+     * @author Igor Salnikov <isalnikov1@gmail.com>
+     */
+   
+    public static class SecurityWebApplicationInitializer extends AbstractSecurityWebApplicationInitializer {
+
+    }
+
+   
+    public static class MvcWebApplicationInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
+
+        @Override
+        protected Class<?>[] getRootConfigClasses() {
+            return new Class[]{SecurityConfig.class};
+        }
+
+        @Override
+        protected Class<?>[] getServletConfigClasses() {
+            return new Class[]{SecurityConfig.class};
+        }
+
+        @Override
+        protected String[] getServletMappings() {
+            return new String[]{"/"};
+
+        }
+
+    }
+
     @Configuration
     public static class WebConfig extends WebMvcConfigurerAdapter {
 
         @Override
         public void addResourceHandlers(ResourceHandlerRegistry registry) {
-            registry.addResourceHandler("/favicon.ico").addResourceLocations("/favicon.ico").setCachePeriod(31556926);
-            registry.addResourceHandler("/resources/**").addResourceLocations("/resources/").setCachePeriod(31556926);
+            registry.addResourceHandler("/favicon.ico").addResourceLocations("/favicon.ico").setCachePeriod(CACHE_PERIOD);
+            registry.addResourceHandler("/resources/**").addResourceLocations("/resources/").setCachePeriod(CACHE_PERIOD);
         }
 
         @Override
@@ -105,6 +146,28 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             return resolver;
         }
 
+        @Bean(name = "messageSource")
+        public MessageSource messageSource() {
+            ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
+            messageSource.setBasename("classpath:messages");
+            messageSource.setCacheSeconds(5);
+            messageSource.setFallbackToSystemLocale(false);
+            messageSource.setDefaultEncoding("UTF-8");
+            return messageSource;
+        }
+
+        @Override
+        public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
+            // Serving static files using the Servlet container's default Servlet.
+            configurer.enable();
+        }
+
+//        @Bean
+//        public LocaleResolver localeResolver() {
+//            SessionLocaleResolver lr = new SessionLocaleResolver();
+//            lr.setDefaultLocale(Locale.ENGLISH);
+//            return lr;
+//        }
 //    @Bean(name = "velocityViewResolver")
 //    public VelocityViewResolver velocityViewResolver() {
 //        VelocityViewResolver resolver = new VelocityViewResolver();

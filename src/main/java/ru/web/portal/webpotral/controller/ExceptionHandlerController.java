@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package ru.web.portal.webpotral.controllers;
+package ru.web.portal.webpotral.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 /**
  *
- * @author Igor Salnikov <igor.salnikov@stoloto.ru>
+ * @author Igor Salnikov <isalnikov1@gmail.com>
  */
 @ControllerAdvice
 public class ExceptionHandlerController {
