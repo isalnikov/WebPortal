@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -44,8 +45,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         BCryptPasswordEncoder encoder = passwordEncoder();
         auth.inMemoryAuthentication().passwordEncoder(encoder);
         auth.inMemoryAuthentication().withUser("user").password("user").roles("USER");
-        auth.inMemoryAuthentication().withUser("admin").password("admin").roles("ADMIN");
-        auth.inMemoryAuthentication().withUser("support").password("support").roles("SUPPORT");
+        auth.inMemoryAuthentication().withUser("admin").password("admin").roles("ADMIN", "USER");
+        auth.inMemoryAuthentication().withUser("support").password("support").roles("SUPPORT", "USER");
     }
 
     @Override
@@ -57,7 +58,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/support/**").hasRole("SUPPORT")
                 .anyRequest().authenticated()
                 .and().rememberMe()
-                .and().formLogin().permitAll().defaultSuccessUrl("/", true);
+                .and().formLogin()
+                .permitAll().defaultSuccessUrl("/", true);
 
         http
                 .sessionManagement().maximumSessions(1);
@@ -65,8 +67,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .logout().deleteCookies("JSESSIONID").permitAll();
 
     }
-    
-    
+
+    @Override
+    public void configure(WebSecurity web) throws Exception {
+        web
+                .ignoring()
+                .antMatchers("/resources/**"); // #3
+    }
+
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -77,7 +85,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         @Override
         public void addResourceHandlers(ResourceHandlerRegistry registry) {
-
+            registry.addResourceHandler("/favicon.ico").addResourceLocations("/favicon.ico").setCachePeriod(31556926);
+            registry.addResourceHandler("/resources/**").addResourceLocations("/resources/").setCachePeriod(31556926);
         }
 
         @Override
