@@ -21,7 +21,7 @@ import org.springframework.stereotype.Service;
 public class ScheduledTasks {
     
     
-     @Scheduled(fixedRate = 5000)
+     @Scheduled(fixedDelay = 10*1000)
      public void currentTime()  {
           System.out.printf( "time : %s\n" ,LocalTime.now());
          }
