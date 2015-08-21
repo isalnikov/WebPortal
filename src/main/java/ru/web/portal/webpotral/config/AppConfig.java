@@ -7,6 +7,7 @@ package ru.web.portal.webpotral.config;
 
 import java.time.LocalTime;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.annotation.PropertySources;
@@ -27,6 +28,9 @@ import org.springframework.scheduling.annotation.Scheduled;
         @PropertySource(value = "classpath:application.properties", ignoreResourceNotFound = true),
         @PropertySource(value = "classpath:messages.properties", ignoreResourceNotFound = true),
     })
+@ComponentScan({
+    "ru.web.portal.webpotral.*"
+})
 public class AppConfig {
 
     @Bean

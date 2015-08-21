@@ -35,10 +35,7 @@ import org.springframework.web.servlet.view.JstlView;
 @Configuration
 @EnableWebMvc
 @ComponentScan({
-    "ru.web.portal.webpotral.config",
-    "ru.web.portal.webpotral.service",
-    "ru.web.portal.webpotral.controller",
-    "ru.web.portal.webpotral.scheduler"
+    "ru.web.portal.webpotral.*"
 })
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(jsr250Enabled = true, prePostEnabled = true)
@@ -135,6 +132,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         public void addViewControllers(ViewControllerRegistry registry) {
             registry.addViewController("/401").setViewName("500");
             registry.addViewController("/about").setViewName("about");
+            registry.addViewController("/admin").setViewName("admin");
         }
 
         @Bean(name = "jspViewResolver")
