@@ -32,7 +32,8 @@ import org.springframework.web.servlet.view.JstlView;
 @ComponentScan({
     "ru.web.portal.webpotral.config",
     "ru.web.portal.webpotral.services",
-    "ru.web.portal.webpotral.controllers"
+    "ru.web.portal.webpotral.controllers",
+    "ru.web.portal.webpotral.schedulers"
 })
 
 @EnableWebSecurity
